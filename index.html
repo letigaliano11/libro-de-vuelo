@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#17261d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Libro de Vuelo">
+<title>Libro de Vuelo</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+Condensed:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef1ef;--card:#fff;--txt:#14201a;--mut:#66716a;--line:#dde2de;--ink:#17261d;--acc:#e39a17;--accs:#fdf1d9;--warn:#9a5b00;--warns:#fff1d6;--sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;--cond:'IBM Plex Sans Condensed','IBM Plex Sans',system-ui,sans-serif}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1411;--card:#161f19;--txt:#e7ece8;--mut:#8d9a92;--line:#243029;--ink:#0a100c;--acc:#f0b43c;--accs:#2a2412;--warn:#f0b43c;--warns:#33290f}}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--txt);font-family:var(--sans);font-size:15px;font-variant-numeric:tabular-nums}
+.app{max-width:560px;margin:0 auto;min-height:100vh;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 100px)}
+.top{background:var(--ink);color:#fff;padding:calc(env(safe-area-inset-top,0px) + 14px) 18px 20px;border-radius:0 0 22px 22px}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+h1{font-size:17px;font-weight:600;letter-spacing:.01em}.bar p{font-size:13px;color:rgba(255,255,255,.6);margin-top:1px}
+.ib{background:rgba(255,255,255,.1);border:none;color:#fff;width:38px;height:38px;border-radius:10px;font-size:17px;cursor:pointer;margin-left:8px}
+.ib:focus-visible,.chip:focus-visible,.fab:focus-visible,.it:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.ib.spin{animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+.tot{display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:10px;align-items:end}
+.tot b{display:block;font-family:var(--cond);font-weight:600;font-size:24px;line-height:1.05}
+.tot .th b{font-size:54px;color:var(--acc);letter-spacing:-.01em;line-height:.95}
+.tot span{font-size:12px;color:rgba(255,255,255,.6)}
+.wrap{padding:0 16px}
+.chart{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 10px;margin:-12px 0 0;position:relative}
+.ct{display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px}.ct span{color:var(--mut)}.ct b{font-weight:600}
+.bars{display:flex;gap:5px;height:76px}.b{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bv{flex:1;width:100%;display:flex;align-items:flex-end}.bv i{display:block;width:100%;background:var(--ink);opacity:.82;border-radius:3px 3px 0 0}
+@media(prefers-color-scheme:dark){.bv i{background:#5f7a68}}
+.b.now .bv i{background:var(--acc);opacity:1}.b span{font-size:10.5px;color:var(--mut)}
+.chips{display:flex;gap:6px;overflow-x:auto;margin:18px 0 4px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--mut);padding:7px 14px;border-radius:8px;font:inherit;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.lg{font-size:12px;color:var(--mut);margin:6px 2px 0;display:flex;align-items:center;gap:7px}.lg i{width:3px;height:12px;background:var(--acc);border-radius:2px}
+.mes{display:flex;justify-content:space-between;align-items:baseline;margin:22px 2px 8px;font-size:14px;font-weight:600}
+.mes span:first-child::first-letter{text-transform:uppercase}.mes span+span{font-size:12.5px;font-weight:400;color:var(--mut)}
+.it{display:grid;grid-template-columns:40px 1fr auto;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--line);border-radius:10px;padding:11px 14px 11px 12px;margin-bottom:6px;cursor:pointer}
+.it.pic{border-left-color:var(--acc)}.it:active{background:var(--accs)}
+.d{text-align:center}.d b{display:block;font-family:var(--cond);font-size:22px;font-weight:600;line-height:1}.d span{font-size:11.5px;color:var(--mut)}
+.r{font-family:var(--cond);font-weight:600;font-size:17px;letter-spacing:.03em}.r i{font-style:normal;color:var(--mut);margin:0 7px}
+.s{display:flex;flex-wrap:wrap;gap:2px 12px;font-size:12.5px;color:var(--mut);margin-top:3px}
+.n{font-size:12.5px;margin-top:4px;color:var(--txt);opacity:.8}
+.h{font-family:var(--cond);font-weight:600;font-size:24px;text-align:right;line-height:1}.h small{font-size:12px;color:var(--mut);font-family:var(--sans);font-weight:400;margin-left:2px}
+.rv{background:var(--warns);color:var(--warn);font-family:var(--sans);font-size:11px;font-weight:600;padding:2px 7px;border-radius:5px;margin-left:8px;letter-spacing:0}
+.empty{text-align:center;color:var(--mut);padding:50px 0;line-height:1.6}
+.fab{position:fixed;right:max(18px,calc(50% - 262px));bottom:calc(env(safe-area-inset-bottom,0px) + 20px);width:56px;height:56px;border-radius:16px;background:var(--acc);color:var(--ink);border:none;font-size:30px;font-weight:500;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer}
+.ov{position:fixed;inset:0;background:rgba(8,14,10,.55);display:none;align-items:flex-end;justify-content:center;z-index:9}.ov.on{display:flex}
+.sh{background:var(--card);width:100%;max-width:560px;max-height:90vh;overflow-y:auto;border-radius:20px 20px 0 0;padding:22px 18px calc(env(safe-area-inset-bottom,0px) + 24px);animation:up .22s ease}
+@keyframes up{from{transform:translateY(100%)}}
+.sh h2{font-weight:600;font-size:20px;margin-bottom:16px}
+label{display:block;font-size:13px;color:var(--mut);margin:0 0 5px;font-weight:500}
+input,select,textarea{width:100%;font:inherit;font-size:15px;color:var(--txt);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px 12px;outline:none;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--accs)}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.f{margin-bottom:12px}
+.btn{width:100%;padding:13px;border-radius:10px;border:none;background:var(--acc);color:var(--ink);font:inherit;font-weight:600;cursor:pointer;margin-top:6px}
+.btn.s2{background:var(--bg);color:var(--txt);border:1px solid var(--line);font-weight:500}.btn.dg{background:none;color:#d4402f;font-weight:500}
+.hint{font-size:13px;color:var(--mut);line-height:1.5;margin:4px 0 12px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 90px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20;max-width:90%;text-align:center}.toast.on{opacity:1}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="bar"><div><h1>Libro de vuelo</h1><p id="k-n">Toca ⋯ para poner tu nombre</p></div>
+      <div><button class="ib" id="bsync" onclick="sync()" title="Sincronizar con el correo" aria-label="Sincronizar">↻</button><button class="ib" onclick="menu()" title="Ajustes" aria-label="Ajustes">⋯</button></div></div>
+    <div class="tot"><div class="th"><b id="k-h">0</b><span>horas de vuelo</span></div><div><b id="k-v">0</b><span>vuelos</span></div><div><b id="k-a">0</b><span>aterrizajes</span></div><div><b id="k-u">—</b><span>último</span></div></div>
+  </div>
+  <div class="wrap">
+  <div class="chart"><div class="ct"><span>Horas por mes, últimos 12 meses</span><b id="k-12"></b></div><div class="bars" id="bars"></div></div>
+  <div class="chips" id="chips"></div>
+  <div class="lg"><i></i>Piloto al mando</div>
+  <div id="lista"></div>
+  </div>
+</div>
+<button class="fab" onclick="abrir()" aria-label="Nuevo vuelo">+</button>
+<div class="ov" id="ov" onclick="if(event.target===this)cerrar()"><div class="sh" id="sh"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY='librovuelo_v6',CFG='librovuelo_cfg';
+let S=load(),cfg=JSON.parse(localStorage.getItem(CFG)||'{}'),year='all';
+function load(){try{const s=localStorage.getItem(KEY);if(s)return JSON.parse(s)}catch(e){}
+  return{vuelos:[],seen:[]}}
+let editVer=0,pushT=null;
+function save(d=true){if(d){S.dirty=true;editVer++;clearTimeout(pushT);pushT=setTimeout(()=>{if(cfg.url&&S.cloud)push()},800)}
+  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+// ── Copia en la nube (hoja de cálculo de tu Google Drive, vía tu script)
+async function push(){
+  const ver=editVer;
+  try{const r=await(await fetch(cfg.url,{method:'POST',body:JSON.stringify({token:cfg.token||'',vuelos:S.vuelos,seen:S.seen})})).json();
+    if(r.error)throw new Error(r.error);
+    if(ver===editVer){S.dirty=false;save(false)}return true
+  }catch(e){toast('No se pudo guardar en tu Drive ('+e.message+'). Se reintentará.');return false}}
+const kf=v=>v.fecha+'|'+v.salida+'|'+v.llegada;
+const $=id=>document.getElementById(id),fh=n=>n.toFixed(1).replace('.',','),esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fd=f=>new Date(f+'T12:00');
+function calcH(s,l){if(!s||!l)return 0;const[a,b]=s.split(':').map(Number),[c,d]=l.split(':').map(Number),m=c*60+d-a*60-b;return m>0?Math.round(m/6)/10:0}
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),3500)}
+
+function render(){
+  $('k-n').textContent=cfg.name||'Toca ⋯ para poner tu nombre';
+  const all=[...S.vuelos].sort((a,b)=>(b.fecha+b.salida).localeCompare(a.fecha+a.salida));
+  $('k-h').textContent=fh(all.reduce((a,v)=>a+v.horas,0));
+  $('k-v').textContent=all.length;$('k-a').textContent=all.reduce((a,v)=>a+v.aterr,0);
+  $('k-u').textContent=all[0]?fd(all[0].fecha).toLocaleDateString('es-ES',{day:'numeric',month:'short'}).replace('.',''):'—';
+  const now=new Date(),ms=[];for(let i=11;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);ms.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'))}
+  const hm=ms.map(k=>all.filter(v=>v.fecha.startsWith(k)).reduce((a,v)=>a+v.horas,0)),mx=Math.max(...hm,1);
+  $('k-12').textContent=fh(hm.reduce((a,b)=>a+b,0))+' h';
+  $('bars').innerHTML=ms.map((k,i)=>`<div class="b${i==11?' now':''}" title="${fh(hm[i])} h"><div class="bv"><i style="height:${hm[i]?Math.max(hm[i]/mx*100,5):0}%"></i></div><span>${fd(k+'-01').toLocaleDateString('es-ES',{month:'narrow'})}</span></div>`).join('');
+  const ys=[...new Set(all.map(v=>v.fecha.slice(0,4)))];
+  $('chips').innerHTML=['all',...ys].map(y=>`<button class="chip${y===year?' on':''}" onclick="year='${y}';render()">${y==='all'?'Todo':y}</button>`).join('');
+  const L=all.filter(v=>year==='all'||v.fecha.startsWith(year));
+  if(!L.length){$('lista').innerHTML='<div class="empty">Aún no hay vuelos.<br>Toca + para añadir el primero.</div>';return}
+  const RL={PIC:'Al mando',DC:'Doble mando',SUP:'Supervisado'},grp={};let h='';
+  L.forEach(v=>{(grp[v.fecha.slice(0,7)]??=[]).push(v)});
+  Object.keys(grp).forEach(k=>{const g=grp[k],m=fd(k+'-01').toLocaleDateString('es-ES',{month:'long',year:'numeric'});
+    h+=`<div class="mes"><span>${m}</span><span>${fh(g.reduce((a,v)=>a+v.horas,0))} h · ${g.length} vuelo${g.length>1?'s':''}</span></div>`;
+    g.forEach(v=>{const d=fd(v.fecha);
+      h+=`<div class="it${v.rol==='PIC'?' pic':''}" tabindex="0" onclick="abrir(${v.id})"><div class="d"><b>${d.getDate()}</b><span>${d.toLocaleDateString('es-ES',{month:'short'}).replace('.','')}</span></div>
+      <div><div class="r">${esc(v.origen)}<i>→</i>${esc(v.destino)}${v.rev?'<span class="rv">Revisar</span>':''}</div>
+      <div class="s"><span>${v.salida}–${v.llegada}</span><span>${esc(v.mat)}</span><span>${v.aterr} aterr.</span><span>${RL[v.rol]||v.rol}</span></div>${v.obs?`<div class="n">${esc(v.obs)}</div>`:''}</div>
+      <div class="h">${fh(v.horas)}<small>h</small></div></div>`})});
+  $('lista').innerHTML=h}
+
+function sheet(html){$('sh').innerHTML=html;$('ov').classList.add('on')}
+function cerrar(){$('ov').classList.remove('on')}
+function abrir(id,pre){
+  const v=id?S.vuelos.find(x=>x.id===id):{fecha:new Date().toISOString().slice(0,10),origen:'LEMR',destino:'LEMR',mat:'EC-HG9',modelo:'KP2U',aterr:1,rol:'PIC',obs:'',salida:'',llegada:'',...pre};
+  window._id=id||null;
+  sheet(`<h2>${id?'Editar vuelo':'Nuevo vuelo'}</h2>
+  <div class="f"><label>Fecha</label><input type="date" id="e-fecha" value="${v.fecha}"></div>
+  <div class="g"><div><label>Origen</label><input id="e-o" maxlength="4" value="${esc(v.origen)}" style="text-transform:uppercase"></div><div><label>Destino</label><input id="e-d" maxlength="4" value="${esc(v.destino)}" style="text-transform:uppercase"></div></div>
+  <div class="g"><div><label>Salida</label><input type="time" id="e-s" value="${v.salida}"></div><div><label>Llegada</label><input type="time" id="e-l" value="${v.llegada}"></div></div>
+  <div class="g"><div><label>Matrícula</label><input id="e-m" value="${esc(v.mat)}" style="text-transform:uppercase"></div><div><label>Modelo</label><input id="e-mo" value="${esc(v.modelo)}"></div></div>
+  <div class="g"><div><label>Aterrizajes</label><input type="number" min="0" id="e-a" value="${v.aterr}"></div><div><label>Rol</label><select id="e-r">${[['PIC','PIC (al mando)'],['DC','Doble mando'],['SUP','Supervisado']].map(r=>`<option value="${r[0]}"${v.rol===r[0]?' selected':''}>${r[1]}</option>`).join('')}</select></div></div>
+  <div class="f"><label>Horas (si difieren de salida/llegada)</label><input type="number" step="0.1" id="e-h" value="${v.horas??''}" placeholder="Auto"></div>
+  <div class="f"><label>Notas</label><textarea id="e-n" rows="2">${esc(v.obs)}</textarea></div>
+  <button class="btn" onclick="guardarV(${pre?'true':'false'})">Guardar</button>
+  ${id?`<button class="btn dg" onclick="borrar(${id})">Eliminar vuelo</button>`:''}`)}
+function guardarV(){
+  const g=i=>$(i).value,s=g('e-s'),l=g('e-l'),h=parseFloat(g('e-h'));
+  if(!g('e-fecha')||(!h&&!(s&&l)))return alert('Indica la fecha y las horas de salida/llegada (o las horas totales).');
+  const v={id:window._id||Date.now(),fecha:g('e-fecha'),origen:g('e-o').toUpperCase(),destino:g('e-d').toUpperCase(),salida:s,llegada:l,mat:g('e-m').toUpperCase(),modelo:g('e-mo'),aterr:+g('e-a')||0,rol:g('e-r'),obs:g('e-n'),horas:h||calcH(s,l)};
+  const i=S.vuelos.findIndex(x=>x.id===v.id);i<0?S.vuelos.push(v):S.vuelos[i]=v;
+  save();cerrar();render()}
+function borrar(id){if(confirm('¿Eliminar este vuelo?')){S.vuelos=S.vuelos.filter(x=>x.id!==id);save();cerrar();render()}}
+
+// ── Lectura de correos de la escuela
+function parseMail(t,fb){
+  const g=re=>{const m=t.match(re);return m&&m[1]},hm=x=>x?x.padStart(5,'0'):'',f={};
+  f.fecha=g(/Fecha\s*:?\s*(\d{4}-\d{2}-\d{2})/i)||g(/(\d{4}-\d{2}-\d{2})/)||fb;
+  f.salida=hm(g(/Hora\s+(?:de\s+)?salida\s*:?\s*(\d{1,2}:\d{2})/i));
+  f.llegada=hm(g(/Hora\s+(?:de\s+)?llegada\s*:?\s*(\d{1,2}:\d{2})/i));
+  const av=t.match(/(?:Avi[oó]n|Aeronave|Matr[ií]cula)\s*:?\s*(EC-?[A-Z0-9]{3})(?:\s*\(([^)]+)\))?/i);
+  if(av){f.mat=av[1].toUpperCase().replace(/^EC(?!-)/,'EC-');if(av[2])f.modelo=av[2].trim()}
+  const ru=t.match(/Ruta\s*:?\s*([A-Z]{4})\s*(?:→|->|-)\s*([A-Z]{4})/i);
+  if(ru){f.origen=ru[1].toUpperCase();f.destino=ru[2].toUpperCase()}
+  const a=g(/Aterrizajes?\s*:?\s*(\d+)/i);if(a)f.aterr=+a;
+  const h=g(/Tiempo\s+(?:de\s+)?vuelo\s*:?\s*(\d+(?:[.,]\d+)?)/i);
+  f.horas=h?parseFloat(h.replace(',','.')):calcH(f.salida,f.llegada);
+  if(/doble\s*mando/i.test(t))f.rol='DC';else if(/supervisad/i.test(t))f.rol='SUP';else if(/solitario|\bsolo\b|al mando/i.test(t))f.rol='PIC';
+  return f.horas&&f.salida&&f.llegada?f:null}
+async function sync(quiet){
+  if(!cfg.url){if(quiet===true)return;menu();return toast('Primero pega la URL de sincronización')}
+  const b=$('bsync');b.classList.add('spin');
+  try{
+    if(S.cloud&&S.dirty&&!(await push())){b.classList.remove('spin');return}
+    const r=await(await fetch(cfg.url+'?token='+encodeURIComponent(cfg.token||''))).json();
+    if(r.error)throw new Error(r.error);
+    if(!S.cloud){ // primera vez que se vincula: se juntan los vuelos locales y los de la nube
+      const have=new Set(S.vuelos.map(kf));let add=0;
+      (r.vuelos||[]).forEach(v=>{if(!have.has(kf(v))){S.vuelos.push(v);add++}});
+      S.seen=[...new Set([...S.seen,...(r.seen||[])])];S.cloud=true;
+      if(S.vuelos.length&&(add||!r.vuelos||S.vuelos.length>(r.vuelos||[]).length))S.dirty=true;
+    }else if(!S.dirty&&r.vuelos){S.vuelos=r.vuelos;S.seen=[...new Set([...S.seen,...(r.seen||[])])]}
+    let n=0,bad=0;
+    for(const m of r.mails){if(S.seen.includes(m.id))continue;
+      const f=parseMail(m.subject+'\n'+m.body,m.date);if(!f){bad++;continue}S.seen.push(m.id);
+      const v={origen:'LEMR',destino:'LEMR',mat:'EC-HG9',modelo:'KP2U',aterr:1,rol:'PIC',obs:'',...f,id:Date.now()+n,rev:!(f.mat&&f.origen)};
+      if(S.vuelos.some(x=>x.fecha===v.fecha&&x.salida===v.salida&&x.llegada===v.llegada))continue;
+      S.vuelos.push(v);n++;S.dirty=true}
+    save(false);render();
+    if(S.dirty)await push();
+    if(n||quiet!==true)toast(n?`${n} vuelo${n>1?'s':''} nuevo${n>1?'s':''} añadido${n>1?'s':''} desde el correo ✓`:'Todo al día, sin vuelos nuevos');
+    if(bad)setTimeout(()=>toast(bad+' correo(s) de Asturfly que no sé leer'),n||quiet!==true?3800:0)
+  }catch(e){toast('No se pudo sincronizar: '+e.message)}
+  b.classList.remove('spin')}
+
+function guardarAj(){const u=$('c-u').value.trim();if(u!==cfg.url)S.cloud=false;
+  cfg={name:$('c-n').value.trim(),url:u,token:$('c-t').value.trim()};localStorage.setItem(CFG,JSON.stringify(cfg));save(false);cerrar();render();if(cfg.url)sync()}
+function menu(){sheet(`<h2>Ajustes</h2>
+  <label>Tu nombre</label><input id="c-n" placeholder="Nombre y apellidos" value="${esc(cfg.name)}" style="margin-bottom:10px">
+  <label>URL del script de correo</label><input id="c-u" placeholder="https://script.google.com/macros/s/…/exec" value="${esc(cfg.url)}" style="margin-bottom:10px">
+  <label>Token</label><input id="c-t" value="${esc(cfg.token)}" style="margin-bottom:6px">
+  <p class="hint">Conecta el libro con tu Gmail y guarda tus vuelos en una hoja de tu Google Drive (ver la guía). Al abrir la app se sincroniza sola; el botón ↻ lo fuerza.</p>
+  <button class="btn" onclick="guardarAj()">Guardar</button>
+  <button class="btn s2" onclick="pegar()">Pegar un correo a mano</button>
+  <button class="btn s2" onclick="csv()">Exportar libro (copia de seguridad)</button>
+  <button class="btn s2" onclick="imp()">Importar libro (CSV)</button>`)}
+function pegar(){sheet(`<h2>Pegar correo</h2><p class="hint">Pega el texto del correo de la escuela. Lo leo y te dejo el vuelo listo para confirmar.</p>
+  <textarea id="p-t" rows="9" placeholder="Pega aquí el correo…"></textarea>
+  <button class="btn" onclick="const f=parseMail($('p-t').value,new Date().toISOString().slice(0,10));f?abrir(null,f):alert('No encuentro horas ni vuelos en ese texto.')">Leer correo</button>`)}
+function csv(){
+  const c=['Fecha;Origen;Destino;Salida;Llegada;Matricula;Modelo;Aterrizajes;Rol;Horas;Notas',...[...S.vuelos].sort((a,b)=>a.fecha.localeCompare(b.fecha)).map(v=>[v.fecha,v.origen,v.destino,v.salida,v.llegada,v.mat,v.modelo,v.aterr,v.rol,fh(v.horas),'"'+(v.obs||'').replace(/"/g,'""')+'"'].join(';'))].join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+c],{type:'text/csv'}));a.download='libro-de-vuelo.csv';a.click()}
+function imp(){
+  const i=document.createElement('input');i.type='file';i.accept='.csv,text/csv';
+  i.onchange=async()=>{const f=i.files[0];if(!f)return;
+    try{const t=(await f.text()).replace(/^\ufeff/,''),rows=[];let r=[],c='',q=false;
+      for(let k=0;k<t.length;k++){const ch=t[k];
+        if(q){if(ch=='"'){if(t[k+1]=='"'){c+='"';k++}else q=false}else c+=ch}
+        else if(ch=='"')q=true;else if(ch==';'){r.push(c);c=''}
+        else if(ch=='\n'||ch=='\r'){if(ch=='\r'&&t[k+1]=='\n')k++;r.push(c);c='';rows.push(r);r=[]}else c+=ch}
+      if(c||r.length){r.push(c);rows.push(r)}
+      let n=0;
+      rows.slice(1).filter(x=>x.length>=10&&/^\d{4}-\d{2}-\d{2}$/.test(x[0])).forEach((x,k)=>{
+        const v={id:Date.now()+k,fecha:x[0],origen:x[1],destino:x[2],salida:x[3],llegada:x[4],mat:x[5],modelo:x[6],aterr:+x[7]||0,rol:x[8],horas:parseFloat(String(x[9]).replace(',','.'))||0,obs:x[10]||''};
+        if(S.vuelos.some(w=>w.fecha===v.fecha&&w.salida===v.salida&&w.llegada===v.llegada))return;
+        S.vuelos.push(v);n++});
+      save();cerrar();render();toast(n?n+' vuelo'+(n>1?'s':'')+' importado'+(n>1?'s':'')+' ✓':'No había vuelos nuevos que importar')
+    }catch(e){toast('No se pudo leer el archivo')}};
+  i.click()}
+render();
+if(cfg.url)sync(true); // sincroniza solo al abrir la app
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&cfg.url)sync(true)});
+</script>
+</body>
+</html>
